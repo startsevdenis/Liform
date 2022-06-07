@@ -77,6 +77,7 @@ abstract class AbstractTransformer implements TransformerInterface
      */
     protected function addCommonSpecs(FormInterface $form, array $schema, $extensions = [], $widget)
     {
+        $schema = $this->addFullName($form, $schema);
         $schema = $this->addLabel($form, $schema);
         $schema = $this->addAttr($form, $schema);
         $schema = $this->addPattern($form, $schema);
@@ -87,6 +88,25 @@ abstract class AbstractTransformer implements TransformerInterface
         return $schema;
     }
 
+    protected function addFullName(FormInterface $form, array $schema)
+    {
+        $namePath = [];
+        $fieldName = '';
+        $p = $form;
+
+        while ($p) {
+            $namePath[] = $p->getConfig()->getName();
+            $p = $p->getParent();
+        }
+        $namePath = array_reverse($namePath);
+
+        $fieldName .= $namePath[0];
+        for ($i=1;$i<count($namePath);$i++) {
+            $fieldName .= '['.$namePath[$i].']';
+        }
+        $schema['full_name'] = $fieldName;
+        return $schema;
+    }
 
     /**
      * @param FormInterface $form
