@@ -75,7 +75,7 @@ abstract class AbstractTransformer implements TransformerInterface
      *
      * @return array
      */
-    protected function addCommonSpecs(FormInterface $form, array $schema, $extensions = [], $widget)
+    protected function addCommonSpecs(FormInterface $form, array $schema, $extensions = [], $widget = '')
     {
         $schema = $this->addFullName($form, $schema);
         $schema = $this->addLabel($form, $schema);
