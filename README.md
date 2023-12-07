@@ -19,7 +19,7 @@ Liform generates a JSON schema representation, that serves as documentation and 
 Open a console, enter your project directory and execute the
 following command to download the latest stable version of this library:
 
-    $ composer require limenius/liform
+    $ composer require startsevdenis/liform
 
 This command requires you to have Composer installed globally, as explained
 in the *installation chapter* of the Composer documentation.
