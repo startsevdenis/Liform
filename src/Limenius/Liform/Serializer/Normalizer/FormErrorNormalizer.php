@@ -43,7 +43,7 @@ class FormErrorNormalizer implements NormalizerInterface
      * 
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($data, string $format = null, array $context = []): array|ArrayObject|string|int|float|bool|null
     {
         if (!$data instanceof FormInterface) {
             throw new \InvalidArgumentException('Expected instance of ' . FormInterface::class);
