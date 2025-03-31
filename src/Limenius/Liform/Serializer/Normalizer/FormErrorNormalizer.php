@@ -37,23 +37,46 @@ class FormErrorNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     * @param string|null $format
+     * @param array $context
+     * 
+     * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($data, $format = null, array $context = [])
     {
+        if (!$data instanceof FormInterface) {
+            throw new \InvalidArgumentException('Expected instance of ' . FormInterface::class);
+        }
+
         return [
-            'code' => isset($context['status_code']) ? $context['status_code'] : null,
+            'code' => $context['status_code'] ?? null,
             'message' => 'Validation Failed',
-            'errors' => $this->convertFormToArray($object),
+            'errors' => $this->convertFormToArray($data),
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     * @param string|null $format
+     * 
+     * @return bool
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null /*, array $context = [] */): bool
     {
+        // Для Symfony 4-5.2 (без контекста) и Symfony 5.3+ (с контекстом)
+        if (\func_num_args() > 2) {
+            $context = \func_get_arg(2);
+        }
+
         return $data instanceof FormInterface && $data->isSubmitted() && !$data->isValid();
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            FormInterface::class => false,
+        ];
     }
 
     /**
