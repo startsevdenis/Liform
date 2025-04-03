@@ -43,7 +43,7 @@ class FormErrorNormalizer implements NormalizerInterface
      * 
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($data, string $format = null, array $context = []): array|ArrayObject|string|int|float|bool|null
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         if (!$data instanceof FormInterface) {
             throw new \InvalidArgumentException('Expected instance of ' . FormInterface::class);
@@ -62,7 +62,7 @@ class FormErrorNormalizer implements NormalizerInterface
      * 
      * @return bool
      */
-    public function supportsNormalization($data, $format = null /*, array $context = [] */): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         // Для Symfony 4-5.2 (без контекста) и Symfony 5.3+ (с контекстом)
         if (\func_num_args() > 2) {

@@ -12,6 +12,7 @@
 namespace Limenius\Liform\Serializer\Normalizer;
 
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Limenius\Liform\FormUtil;
@@ -26,17 +27,17 @@ class InitialValuesNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($form, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $formView = $form->createView();
+        $formView = $data->createView();
 
-        return $this->getValues($form, $formView);
+        return $this->getValues($data, $formView);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Form;
     }
@@ -115,5 +116,12 @@ class InitialValuesNormalizer implements NormalizerInterface
         }
 
         return null;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            FormInterface::class => false,
+        ];
     }
 }
